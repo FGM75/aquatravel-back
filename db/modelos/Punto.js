@@ -22,7 +22,7 @@ const PuntoSchema = new Schema({
     required: true,
   },
   servicios: {
-    type: Schema.Types.ObjectId,
+    type: [Schema.Types.ObjectId],
     ref: "Servicio",
   },
   tipoPunto: {
