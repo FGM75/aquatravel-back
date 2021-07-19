@@ -1,10 +1,6 @@
 const { Schema, model } = require("mongoose");
 
-const valoracionesSchema = new Schema({
-  puntuacion: {
-    type: Number,
-    required: false,
-  },
+const serviciosSchema = new Schema({
   bandera: Boolean,
   accesibilidad: {
     type: String,
@@ -17,5 +13,5 @@ const valoracionesSchema = new Schema({
   surf: Boolean,
   voley: Boolean,
 });
-const Valoracion = model("Valoracion", valoracionesSchema, "valoraciones");
-module.exports = Valoracion;
+const Servicio = model("Servicio", serviciosSchema, "servicios");
+module.exports = Servicio;
