@@ -1,5 +1,5 @@
 require("dotenv").config();
-const debug = require("debug")("api-gatos:db:conexion");
+const debug = require("debug")("api-aquatravel:db:conexion");
 const chalk = require("chalk");
 const mongoose = require("mongoose");
 

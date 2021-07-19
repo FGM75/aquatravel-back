@@ -1,14 +1,28 @@
 require("dotenv").config();
 const express = require("express");
-const { errorServidor } = require("./errores");
+const debug = require("debug")("api-aquatravel:servidor:init");
+const chalk = require("chalk");
 
 const app = express();
-const puerto = process.env.PORT || 2000;
 
-const server = app.listen(puerto, () => {
-  console.log(`Servidor escuchando en el puerto ${puerto}`);
-});
+const puerto = process.env.PORT || process.env.PUERTO_SERVIDOR || 5000;
 
-server.on("error", (err) => errorServidor(err, puerto));
+const iniciaServidor = () => {
+  const servidor = app.listen(puerto, () => {
+    debug(chalk.yellow(`Servidor iniciado en el puerto ${puerto}`));
+  });
 
-module.exports = app;
+  servidor.on("error", (err) => {
+    debug(
+      chalk.red.bold(`Error al iniciar el servidor en el puerto ${puerto}`)
+    );
+    if (err.code === "EADDRINUSE") {
+      debug(chalk.red.bold(`El puerto ${puerto} está ocupado`));
+    }
+  });
+};
+
+module.exports = {
+  app,
+  iniciaServidor,
+};
