@@ -4,7 +4,7 @@ const favoritoSchema = new Schema(
   {
     id: {
       type: String,
-      requiere: true,
+      required: true,
     },
     creadoId: {
       type: [Schema.Types.ObjectId],
