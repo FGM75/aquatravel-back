@@ -14,7 +14,7 @@ const PuntoSchema = new Schema({
     required: true,
   },
   coordenadas: {
-    type: [Float],
+    type: [Number],
     validate: [
       (coordenadas) => coordenadas.length === 2,
       "Deben introducirse dos coordenadas",
