@@ -1,12 +1,16 @@
-const morgan = require("morgan");
-const express = require("express");
+require("dotenv").config();
+const debug = require("debug")("api-aquatravel:servidor:principal");
 const cors = require("cors");
-const app = require("./init");
-const { errorGeneral, error404 } = require("./errores");
+const morganFreeman = require("morgan");
+const { error404, errorGeneral } = require("./errores");
+const rutasPuntos = require("./rutas/puntos");
+const { app } = require("./init");
 
-// app.use(cors());
-// app.use(morgan("dev"));
+app.use(morganFreeman("dev"));
+app.use(cors());
+
 // app.use(express.json());
+app.use("/puntos", rutasPuntos);
 
-// app.use(errorGeneral);
-// app.use(error404);
+app.use(errorGeneral);
+app.use(error404);
