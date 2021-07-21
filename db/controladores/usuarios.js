@@ -1,36 +1,53 @@
+const bcrypt = require("bcrypt");
 const { errorGeneral } = require("../../servidor/errores");
 const Usuario = require("../modelos/Usuarios");
 const { Usuarios } = require("../modelos/Usuarios");
 
 const existeUsuarioRepetido = async (usuario) => {
-    const usuarioRepetido = await Usuario.findOne({ usuario });
-    if (!usuarioRepetido) {
-        throw errorGeneral("Error al crear tu usuario, o ya existe.");
-    }
+  const usuarioRepetido = await Usuario.findOne({ usuario });
+  if (!usuarioRepetido) {
+    throw errorGeneral("Error al crear tu usuario, o ya existe.");
+  }
 };
 const existeEmailUsuarioRepetido = async (email) => {
-    const usuarioRepetido = await Usuario.findOne({ email });
-    if (!usuarioRepetido) {
-        throw errorGeneral("Error al crear tu usuario, o el email ya existe.");
-    }
+  const usuarioRepetido = await Usuario.findOne({ email });
+  if (!usuarioRepetido) {
+    throw errorGeneral("Error al crear tu usuario, o el email ya existe.");
+  }
 };
 const listarUsuarioId = async (usuario) => {
-    const usuarioRepetido = await Usuario.findById(usuario);
-    if (!usuarioRepetido) {
-        throw errorGeneral("Existe tu nombre usuario");
-    }
-    return usuarioRepetido;
+  const usuarioRepetido = await Usuario.findById(usuario);
+  if (!usuarioRepetido) {
+    throw errorGeneral("Existe tu nombre usuario");
+  }
+  return usuarioRepetido;
 };
 const listarUsuarioEmail = async (email) => {
-    const usuarioRepetido = await Usuario.findOne({email});
-    if (!usuarioRepetido) {
-        throw errorGeneral("Existe tu email");
-    }
-    return usuarioRepetido;
+  const usuarioRepetido = await Usuario.findOne({ email });
+  if (!usuarioRepetido) {
+    throw errorGeneral("Existe tu email");
+  }
+  return usuarioRepetido;
 };
-module.export = {
-    listarUsuarioEmail,
-    listarUsuarioId,
-    existeEmailUsuarioRepetido,
-    existeUsuarioRepetido,
+const crearUsuario = async (usuario, contrasenya, email) => {
+  try {
+    const contrasenyaEncriptada = await bcrypt.hash(contrasenya, 10);
+    const nuevoUsuario = await Usuario.create({
+      usuario,
+      contrasenya: contrasenyaEncriptada,
+      email,
+    });
+    return nuevoUsuario._id;
+  } catch (err) {
+    const nuevoError = new Error("No se ha podido crear el usuario");
+    console.log(err.message);
+    throw err.codigo ? err : nuevoError;
+  }
+};
+module.exports = {
+  listarUsuarioEmail,
+  listarUsuarioId,
+  existeEmailUsuarioRepetido,
+  existeUsuarioRepetido,
+  crearUsuario,
 };

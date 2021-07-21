@@ -6,7 +6,7 @@ const UsuarioShema = new Schema({
     unique: true,
     required: true,
   },
-  constrasenya: {
+  contrasenya: {
     type: String,
     minLength: 6,
     required: true,
@@ -21,7 +21,7 @@ const UsuarioShema = new Schema({
     ref: "Punto",
   },
   comentarios: {
-    type: [Schema.Type.ObjectId],
+    type: [Schema.Types.ObjectId],
     ref: "Comentario",
   },
 });
