@@ -37,6 +37,7 @@ const PuntoSchema = new Schema({
     type: [Schema.Types.ObjectId],
     ref: "Comentario",
   },
+  urls: [String],
 });
 
 const Punto = model("Punto", PuntoSchema, "puntos");
