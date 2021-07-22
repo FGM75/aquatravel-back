@@ -7,7 +7,7 @@ const urlAPI = process.env.API_URL_OPENDATA;
 const getDatosAPIOpenData = async () => {
   const resp = await fetch(urlAPI);
   const { features } = await resp.json();
-  return features.slice(0, 10);
+  return features;
 };
 
 module.exports = {
