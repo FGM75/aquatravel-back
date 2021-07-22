@@ -44,23 +44,6 @@ const crearUsuario = async (usuario, contrasenya, email) => {
     throw err.codigo ? err : nuevoError;
   }
 };
-const borrarUsuario = async (usuario) => {
-  const usuarioBorrado = await Usuario.findByIdAndDelete({usuario});
-  return usuarioBorrado;
-};
-const modificarUsuario = async (usuario) => {
-  try {
-    const usuarioModificado = await Usuario.updateOne(
-      { id: usuario._id },
-      usuario
-    );
-    return usuarioModificado;
-  } catch (err) {
-    const nuevoError = new Error("No se ha podido editar el tipo");
-    console.log(err.message);
-    throw err.codigo ? err : nuevoError;
-  }
-};
 module.exports = {
   listarUsuarioEmail,
   listarUsuarioId,
