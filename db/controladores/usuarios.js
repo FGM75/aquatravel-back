@@ -44,10 +44,33 @@ const crearUsuario = async (usuario, contrasenya, email) => {
     throw err.codigo ? err : nuevoError;
   }
 };
+const modificarUsuario = async (usuario) => {
+  try {
+    const usuarioModificado = await Usuario.updateOne(
+      { _id: usuarioModificado },
+      usuario
+    );
+    return usuarioModificado;
+  } catch (err) {
+    const nuevoError = new Error("No se ha podido editar el tipo");
+    console.log(err.message);
+    throw err.codigo ? err : nuevoError;
+  }
+};
+const borrarUsuario = async (usuario) => {
+  const usuarioBorrado = await Usuario.findByIdAndDelete(usuario);
+  if (!usuarioBorrado) {
+    throw errorGeneral("El usuario no se ha podido borrar");
+  }
+
+};
+
 module.exports = {
   listarUsuarioEmail,
   listarUsuarioId,
   existeEmailUsuarioRepetido,
   existeUsuarioRepetido,
   crearUsuario,
+  modificarUsuario,
+  borrarUsuario,
 };
