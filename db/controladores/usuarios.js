@@ -44,10 +44,38 @@ const crearUsuario = async (usuario, contrasenya, email) => {
     throw err.codigo ? err : nuevoError;
   }
 };
+const loginUsuario = async (usuario, contrasenya) => {
+  try {
+    const usuarioEncontrado = await Usuario.findOne({
+      usuario,
+    });
+    if (!usuarioEncontrado) {
+      const nuevoError = new Error("Credenciales incorrectas");
+      nuevoError.codigo = 403;
+      throw nuevoError;
+    }
+    const contrasenyaCoincide = await bcrypt.compare(
+      contrasenya,
+      usuarioEncontrado.contrasenya
+    );
+    if (!contrasenyaCoincide) {
+      const nuevoError = new Error("Credenciales incorrectas");
+      nuevoError.codigo = 403;
+      throw nuevoError;
+    }
+    return usuarioEncontrado._id;
+  } catch (err) {
+    const nuevoError = new Error(
+      "No se han podido comprobar las credenciales del usuario"
+    );
+    throw err.codigo ? err : nuevoError;
+  }
+};
 module.exports = {
   listarUsuarioEmail,
   listarUsuarioId,
   existeEmailUsuarioRepetido,
   existeUsuarioRepetido,
   crearUsuario,
+  loginUsuario,
 };

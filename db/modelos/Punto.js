@@ -33,6 +33,10 @@ const PuntoSchema = new Schema({
     type: [Schema.Types.ObjectId],
     ref: "Valoracion",
   },
+  comentarios: {
+    type: [Schema.Types.ObjectId],
+    ref: "Comentario",
+  },
 });
 
 const Punto = model("Punto", PuntoSchema, "puntos");
