@@ -13,6 +13,7 @@ const PuntoSchema = new Schema({
     type: String,
     required: true,
   },
+  descripcion: String,
   coordenadas: {
     type: [Number],
     validate: [
@@ -20,10 +21,6 @@ const PuntoSchema = new Schema({
       "Deben introducirse dos coordenadas",
     ],
     required: true,
-  },
-  servicios: {
-    type: [Schema.Types.ObjectId],
-    ref: "Servicio",
   },
   tipoPunto: {
     type: String,
