@@ -7,6 +7,7 @@ const express = require("express");
 // const { loginUsuario, crearUsuario } = require("../../db/controladores/puntos");
 const router = express.Router();
 const serviceAccount = require("../../aquatravel-f70b5-firebase-adminsdk-pjln1-902ac51699.json"); // JSON descargado desde Firebase
+const { getDatosAPIOpenData } = require("../../api/APIOpenData");
 
 admin.initializeApp({
   credential: admin.credential.cert(serviceAccount),
@@ -44,5 +45,36 @@ router.post("/nuevo-punto", upload.single("imagen"), async (req, res, next) => {
   });
   res.send("Punto registrado");
 });
-
+router.use(express.json());
+router.get("/puntosAPI", async (req, res, next) => {
+  const featuresAPIOPENDATA = await getDatosAPIOpenData();
+  const serviciosPuntos = featuresAPIOPENDATA.map(
+    ({
+      attributes: {
+        Nombre,
+        Comunidad_,
+        Provincia,
+        Descripci,
+        Grado_ocup: GradoOcupacion,
+        Bandera_az: BanderaAzul,
+        Form_de_a: FormaAcceso,
+        Zona_Surf: ZonaSurf,
+        Nudismo,
+        Duchas,
+      },
+    }) => ({
+      Nombre,
+      Comunidad_,
+      Provincia,
+      Descripci,
+      Grado_ocup: GradoOcupacion,
+      Bandera_az: BanderaAzul,
+      Form_de_a: FormaAcceso,
+      Zona_Surf: ZonaSurf,
+      Nudismo,
+      Duchas,
+    })
+  );
+  res.json(serviciosPuntos);
+});
 module.exports = router;
