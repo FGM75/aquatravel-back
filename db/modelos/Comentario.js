@@ -5,6 +5,10 @@ const comentariosSchema = new Schema({
     type: String,
     required: false,
   },
+  idUsuario: {
+    type: Schema.Types.ObjectId,
+    ref: "Usuario",
+  },
   timestamp: true,
 });
 const Comentario = model("Comentario", comentariosSchema, "comentarios");

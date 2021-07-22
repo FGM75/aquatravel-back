@@ -19,11 +19,7 @@ const UsuarioShema = new Schema({
   favoritos: {
     type: [Schema.Types.ObjectId],
     ref: "Punto",
-  },
-  comentarios: {
-    type: [Schema.Types.ObjectId],
-    ref: "Comentario",
-  },
+  }
 });
 const Usuario = model("Usuario", UsuarioShema, "usuarios");
 module.exports = Usuario;
