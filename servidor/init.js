@@ -5,7 +5,7 @@ const chalk = require("chalk");
 
 const app = express();
 
-const puerto = process.env.PORT || process.env.PUERTO_SERVIDOR || 5000;
+const puerto = process.env.PORT || 5000;
 
 const iniciaServidor = () => {
   const servidor = app.listen(puerto, () => {
