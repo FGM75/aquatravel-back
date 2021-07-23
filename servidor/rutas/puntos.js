@@ -116,9 +116,14 @@ router.get("/listado", async (req, res, next) => {
           Nudismo,
           Duchas,
         } = subResultado;
-        return [
-          { ...punto, GradoOcupacion, BanderaAzul, ZonaSurf, Nudismo, Duchas },
-        ];
+        return {
+          ...punto.toObject(),
+          GradoOcupacion,
+          BanderaAzul,
+          ZonaSurf,
+          Nudismo,
+          Duchas,
+        };
       } else {
         return punto;
       }
