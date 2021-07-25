@@ -1,7 +1,7 @@
 const { Schema, model } = require("mongoose");
 
 const solicitudSchema = new Schema({
-  id: {
+  idUsuario: {
     type: [Schema.Types.ObjectId],
     ref: "Usuario",
     required: true,
@@ -18,26 +18,23 @@ const solicitudSchema = new Schema({
     type: String,
     required: true,
   },
-  coordenadas: {
-    type: [Number],
-    validate: [
-      (coordenadas) => coordenadas.length === 2,
-      "Deben introducirse dos coordenadas",
-    ],
+  descripcion: {
+    type: String,
     required: true,
   },
-  servicios: {
-    type: [Schema.Types.ObjectId],
-    ref: "Servicio",
+  latitud: {
+    type: String,
+    required: true,
+  },
+  longitud: {
+    type: String,
+    required: true,
   },
   tipoPunto: {
     type: String,
     required: true,
   },
-  valoraciones: {
-    type: [Schema.Types.ObjectId],
-    ref: "Valoracion",
-  },
+  urls: [String],
 });
 const Solicitud = model("Solicitud", solicitudSchema, "solicitudes");
 module.exports = Solicitud;

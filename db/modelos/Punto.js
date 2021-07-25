@@ -13,13 +13,16 @@ const PuntoSchema = new Schema({
     type: String,
     required: true,
   },
-  descripcion: String,
-  coordenadas: {
-    type: [Number],
-    validate: [
-      (coordenadas) => coordenadas.length === 2,
-      "Deben introducirse dos coordenadas",
-    ],
+  descripcion: {
+    type: String,
+    required: true,
+  },
+  latitud: {
+    type: String,
+    required: true,
+  },
+  longitud: {
+    type: String,
     required: true,
   },
   tipoPunto: {
