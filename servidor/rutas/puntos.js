@@ -2,20 +2,22 @@ require("dotenv").config();
 const admin = require("firebase-admin");
 const debug = require("debug")("api-aquatravel:servidor");
 const multer = require("multer");
-const morganFreeman = require("morgan");
-const cors = require("cors");
 const path = require("path");
 const express = require("express");
-// const { loginUsuario, crearUsuario } = require("../../db/controladores/puntos");
+
 const router = express.Router();
 const serviceAccount = require("../../aquatravel-f70b5-firebase-adminsdk-pjln1-902ac51699.json"); // JSON descargado desde Firebase
 const { getDatosAPIOpenData } = require("../../api/APIOpenData");
 const { listarPunto, crearPunto } = require("../../db/controladores/puntos");
 
-admin.initializeApp({
-  credential: admin.credential.cert(serviceAccount),
-  storageBucket: "aquatravel-f70b5.appspot.com", // Nombre de vuestro bucket
-});
+if (!admin.apps.length) {
+  admin.initializeApp({
+    credential: admin.credential.cert(serviceAccount),
+    storageBucket: "aquatravel-f70b5.appspot.com", // Nombre de vuestro bucket
+  });
+} else {
+  admin.app(); // if already initialized, use that one
+}
 
 const bucket = admin.storage().bucket();
 const upload = multer();
