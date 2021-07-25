@@ -29,14 +29,16 @@ const listarUsuarioEmail = async (email) => {
   }
   return usuarioRepetido;
 };
-const crearUsuario = async (usuario, contrasenya, email) => {
+const crearUsuario = async (usuario, contrasenya, email, tokenVerificacion) => {
   try {
     const contrasenyaEncriptada = await bcrypt.hash(contrasenya, 10);
     const nuevoUsuario = await Usuario.create({
       usuario,
       contrasenya: contrasenyaEncriptada,
       email,
+      confirmationCode: tokenVerificacion,
     });
+
     return nuevoUsuario._id;
   } catch (err) {
     const nuevoError = new Error("No se ha podido crear el usuario");
@@ -63,6 +65,13 @@ const loginUsuario = async (usuario, contrasenya) => {
       nuevoError.codigo = 403;
       throw nuevoError;
     }
+    if (usuarioEncontrado.status !== "Active") {
+      const nuevoError = new Error(
+        "Cuenta pendiente. Porfavor verifica tu email!"
+      );
+      nuevoError.codigo = 401;
+      throw nuevoError;
+    }
     return usuarioEncontrado._id;
   } catch (err) {
     const nuevoError = new Error(
@@ -71,7 +80,31 @@ const loginUsuario = async (usuario, contrasenya) => {
     throw err.codigo ? err : nuevoError;
   }
 };
-
+const confirmarUsuario = async ({ confirmationCode }) => {
+  try {
+    const confirmado = await Usuario.updateOne(
+      {
+        confirmationCode,
+      },
+      { status: "Active" }
+    );
+    if (confirmado.ok !== 1) {
+      const nuevoError = new Error("Usuario no encontrado");
+      nuevoError.codigo = 403;
+      throw nuevoError;
+    }
+    const usuarioConfirmado = await Usuario.findOne({ confirmationCode });
+    return usuarioConfirmado._id;
+  } catch (err) {
+    const nuevoError = new Error("No se ha podido confirmar el usuario");
+    throw err.codigo ? err : nuevoError;
+  }
+};
+const getUsuario = async (id) => {
+  console.log(id);
+  const usuario = await Usuario.findById(id);
+  return usuario;
+};
 const modificarUsuario = async (usuario) => {
   try {
     const usuarioModificado = await Usuario.updateOne(
@@ -90,7 +123,6 @@ const borrarUsuario = async (usuario) => {
   if (!usuarioBorrado) {
     throw errorGeneral("El usuario no se ha podido borrar");
   }
-
 };
 
 module.exports = {
@@ -102,4 +134,6 @@ module.exports = {
   loginUsuario,
   modificarUsuario,
   borrarUsuario,
+  confirmarUsuario,
+  getUsuario,
 };
