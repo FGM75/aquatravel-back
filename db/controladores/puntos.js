@@ -1,10 +1,38 @@
 const Punto = require("../modelos/Punto");
 
-const listarPunto = async () => {
+const listarPuntosActivos = async () => {
   try {
-    const puntos = await Punto.find();
+    const puntos = await Punto.find({
+      status: {
+        $eq: "Active",
+      },
+    });
     if (puntos.length === 0) {
-      const nuevoError = new Error("No hay ningún tipo en la base de datos.");
+      const nuevoError = new Error(
+        "No hay ningún punto activo en la base de datos."
+      );
+      nuevoError.codigo = 404;
+      throw nuevoError;
+    }
+    return puntos;
+  } catch (err) {
+    const nuevoError = new Error(
+      "No se ha podido obtener el listado de puntos"
+    );
+    throw err.codigo ? err : nuevoError;
+  }
+};
+const listarPuntosInactivos = async () => {
+  try {
+    const puntos = await Punto.find({
+      status: {
+        $eq: "Pending",
+      },
+    });
+    if (puntos.length === 0) {
+      const nuevoError = new Error(
+        "No hay ningún punto pendiente en la base de datos."
+      );
       nuevoError.codigo = 404;
       throw nuevoError;
     }
@@ -36,8 +64,9 @@ const borrarPunto = async (idTipoPunto) => {
 };
 
 module.exports = {
-  listarPunto,
+  listarPuntosActivos,
   idPunto,
   crearPunto,
   borrarPunto,
+  listarPuntosInactivos,
 };

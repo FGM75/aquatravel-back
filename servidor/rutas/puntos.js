@@ -8,7 +8,11 @@ const express = require("express");
 const router = express.Router();
 const serviceAccount = require("../../aquatravel-f70b5-firebase-adminsdk-pjln1-902ac51699.json"); // JSON descargado desde Firebase
 const { getDatosAPIOpenData } = require("../../api/APIOpenData");
-const { listarPunto, crearPunto } = require("../../db/controladores/puntos");
+const {
+  listarPuntosActivos,
+  crearPunto,
+} = require("../../db/controladores/puntos");
+const { getNombreComunidad } = require("../../db/controladores/comunidades");
 
 if (!admin.apps.length) {
   admin.initializeApp({
@@ -33,17 +37,21 @@ router.post("/nuevo-punto", upload.single("imagen"), async (req, res, next) => {
       latitud,
       longitud,
       descripcion,
+      idUsuario,
     } = req.body;
     const parameters = {
       nombre,
       provincia,
-      comunidad,
       tipoPunto,
       latitud,
       longitud,
       descripcion,
+      idUsuario,
     };
     parameters.urls = [];
+    parameters.status = "Pending";
+    const nombreComunidad = await getNombreComunidad(comunidad);
+    parameters.comunidad = nombreComunidad;
     const nombreArchivo = `${path.basename(
       req.file.originalname,
       path.extname(req.file.originalname)
@@ -85,7 +93,7 @@ router.use(express.json());
 router.get("/listado", async (req, res, next) => {
   try {
     const featuresAPIOPENDATA = await getDatosAPIOpenData();
-    const puntosBBDD = await listarPunto();
+    const puntosBBDD = await listarPuntosActivos();
     const serviciosPuntos = featuresAPIOPENDATA.map(
       ({
         attributes: {
