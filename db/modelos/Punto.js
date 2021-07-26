@@ -38,6 +38,16 @@ const PuntoSchema = new Schema({
     ref: "Comentario",
   },
   urls: [String],
+  idUsuario: {
+    type: Schema.Types.ObjectId,
+    ref: "Usuario",
+    required: true,
+  },
+  status: {
+    type: String,
+    enum: ["Pending", "Active"],
+    default: "Pending",
+  },
 });
 
 const Punto = model("Punto", PuntoSchema, "puntos");
