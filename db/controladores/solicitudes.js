@@ -15,9 +15,7 @@ const borrarSolicitud = async (solicitud) => {
 };
 const crearSolicitud = async (punto) => {
   try {
-    const solicitudCreada = await Solicitud.create({
-      punto,
-    });
+    const solicitudCreada = await Solicitud.create(punto);
     return solicitudCreada;
   } catch (err) {
     const nuevoError = new Error("No se ha podido crear la solicitud");

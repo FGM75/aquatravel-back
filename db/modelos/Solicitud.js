@@ -2,7 +2,7 @@ const { Schema, model } = require("mongoose");
 
 const solicitudSchema = new Schema({
   idUsuario: {
-    type: [Schema.Types.ObjectId],
+    type: Schema.Types.ObjectId,
     ref: "Usuario",
     required: true,
   },

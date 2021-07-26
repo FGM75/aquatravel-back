@@ -23,7 +23,7 @@ const enviarCorreo = (name, email, confirmationCode) => {
     html: `<h1 style="text-align:center;">Email de verificación</h1>
         <h2 style="text-align:center;">Hola ${name}</h2>
         <p>Grácias por registrarte en AquaTravel. Porfavor confirma tu email en el siguiente enlace:</p>
-        <a href=http://localhost:5000/usuarios/confirmar/${confirmationCode}> Clica aquí</a>
+        <a href=${process.env.URL_ENDPOINT_CONFIRM_USER}${confirmationCode}> Clica aquí</a>
         </div>`,
   };
   transport.sendMail(mensaje, (err, info) => {
