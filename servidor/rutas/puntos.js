@@ -94,17 +94,17 @@ router.post("/nuevo-punto", upload.single("imagen"), async (req, res, next) => {
 });
 
 router.use(express.json());
-router.post("/aceptarPunto", async (req, res, next) => {
+router.get("/aceptarPunto/:id", async (req, res, next) => {
   try {
-    const { id } = req.body;
-    console.log(req.body);
-    // const punto = await confirmarPunto(idPunto);
-    // if (!punto) {
-    //   const nuevoError = new Error("Punto no encontrado");
-    //   nuevoError.codigo = 403;
-    //   return next(nuevoError);
-    // }
-    // res.json(punto);
+    const { id } = req.params;
+    console.log(req.params);
+    const punto = await confirmarPunto(id);
+    if (!punto) {
+      const nuevoError = new Error("Punto no encontrado");
+      nuevoError.codigo = 403;
+      return next(nuevoError);
+    }
+    res.json(punto);
   } catch (err) {
     next(err);
   }
