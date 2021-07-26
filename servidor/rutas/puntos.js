@@ -11,6 +11,9 @@ const { getDatosAPIOpenData } = require("../../api/APIOpenData");
 const {
   listarPuntosActivos,
   crearPunto,
+  listarPuntosInactivos,
+  confirmarPunto,
+  borrarPunto,
 } = require("../../db/controladores/puntos");
 const { getNombreComunidad } = require("../../db/controladores/comunidades");
 
@@ -89,7 +92,23 @@ router.post("/nuevo-punto", upload.single("imagen"), async (req, res, next) => {
     next(err);
   }
 });
+
 router.use(express.json());
+router.post("/aceptarPunto", async (req, res, next) => {
+  try {
+    const { id } = req.body;
+    console.log(req.body);
+    // const punto = await confirmarPunto(idPunto);
+    // if (!punto) {
+    //   const nuevoError = new Error("Punto no encontrado");
+    //   nuevoError.codigo = 403;
+    //   return next(nuevoError);
+    // }
+    // res.json(punto);
+  } catch (err) {
+    next(err);
+  }
+});
 router.get("/listado", async (req, res, next) => {
   try {
     const featuresAPIOPENDATA = await getDatosAPIOpenData();
@@ -148,6 +167,28 @@ router.get("/listado", async (req, res, next) => {
       }
     });
     res.json(listadoPuntos);
+  } catch (err) {
+    next(err);
+  }
+});
+router.get("/pendientes", async (req, res, next) => {
+  try {
+    const puntosBBDD = await listarPuntosInactivos();
+    res.json(puntosBBDD);
+  } catch (err) {
+    next(err);
+  }
+});
+router.delete("/punto/:idPunto", async (req, res, next) => {
+  const { idPunto } = req.params;
+  try {
+    const punto = await borrarPunto(idPunto);
+    if (!punto) {
+      const nuevoError = new Error("Punto no encontrado");
+      nuevoError.codigo = 403;
+      return next(nuevoError);
+    }
+    res.json(punto);
   } catch (err) {
     next(err);
   }
