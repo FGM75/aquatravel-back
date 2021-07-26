@@ -59,14 +59,33 @@ const crearPunto = async (punto) => {
   }
 };
 const borrarPunto = async (idTipoPunto) => {
-  const borrarTipo = await Punto.findByIdAndDelete(idTipoPunto);
-  return borrarTipo;
+  try {
+    const borrarTipo = await Punto.findByIdAndDelete(idTipoPunto);
+    return borrarTipo;
+  } catch (err) {
+    const nuevoError = new Error("No se ha podido borrar");
+    console.log(err.message);
+    throw err.codigo ? err : nuevoError;
+  }
 };
-
+const confirmarPunto = async (id) => {
+  try {
+    const tipoModificadoBD = await Punto.findByIdAndUpdate(
+      { _id: id },
+      { status: "Active" }
+    );
+    return tipoModificadoBD;
+  } catch (err) {
+    const nuevoError = new Error("No se ha podido editar el tipo");
+    console.log(err.message);
+    throw err.codigo ? err : nuevoError;
+  }
+};
 module.exports = {
   listarPuntosActivos,
   idPunto,
   crearPunto,
   borrarPunto,
   listarPuntosInactivos,
+  confirmarPunto,
 };
