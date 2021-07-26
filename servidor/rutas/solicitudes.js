@@ -42,10 +42,10 @@ router.post(
         nombre,
         provincia,
         comunidad,
-        descripcion,
+        tipoPunto,
         latitud,
         longitud,
-        tipoPunto,
+        descripcion,
       };
       parameters.urls = [];
       const nombreArchivo = `${path.basename(
