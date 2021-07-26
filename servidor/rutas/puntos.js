@@ -25,15 +25,24 @@ const upload = multer();
 router.post("/nuevo-punto", upload.single("imagen"), async (req, res, next) => {
   // Obtenemos toda la info de req.body
   try {
-    const { nombre, provincia, comunidad, tipoPunto, latitud, longitud } =
-      req.body;
+    const {
+      nombre,
+      provincia,
+      comunidad,
+      tipoPunto,
+      latitud,
+      longitud,
+      descripcion,
+    } = req.body;
     const parameters = {
       nombre,
       provincia,
       comunidad,
       tipoPunto,
+      latitud,
+      longitud,
+      descripcion,
     };
-    parameters.coordenadas = [+latitud, +longitud];
     parameters.urls = [];
     const nombreArchivo = `${path.basename(
       req.file.originalname,
